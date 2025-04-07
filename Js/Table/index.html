@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Table</title>
+  <style>
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #9b9999;
+      padding: 10px;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: 40%;
+      padding: 5px;
+    }
+
+    button {
+      padding: 5px 10px;
+      margin: 2px;
+      cursor: pointer;
+    }
+
+    .form-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <input type="text" id="name" placeholder="Name" />
+    <input type="text" id="email" placeholder="Email" />
+    <button onclick="addRow()">Add Row</button>
+  </div>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+    </tbody>
+  </table>
+
+  <script>
+    function addRow() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (name === "" || email === "") {
+        alert("Please enter both name and email.");
+        return;
+      }
+
+      const table = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
+      const newRow = table.insertRow();
+
+      newRow.innerHTML = `
+        <td><input type="text" value="${name}" disabled></td>
+        <td><input type="text" value="${email}" disabled></td>
+        <td>
+          <button onclick="editRow(this)">Edit</button>
+          <button onclick="saveRow(this)" style="display:none;">Save</button>
+          <button onclick="deleteRow(this)">Delete</button>
+        </td>
+      `;
+
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+    }
+
+    function editRow(btn) {
+      const row = btn.parentNode.parentNode;
+      const inputs = row.querySelectorAll("input");
+
+      inputs.forEach(input => input.disabled = false);
+
+      btn.style.display = "none"; 
+      btn.nextElementSibling.style.display = "inline"; 
+    }
+
+    function saveRow(btn) {
+      const row = btn.parentNode.parentNode;
+      const inputs = row.querySelectorAll("input");
+
+      inputs.forEach(input => input.disabled = true);
+
+      btn.style.display = "none"; 
+      btn.previousElementSibling.style.display = "inline"; 
+    }
+
+    function deleteRow(btn) {
+      const row = btn.parentNode.parentNode;
+      row.remove();
+    }
+  </script>
+
+</body>
+</html>
